@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -266,8 +265,7 @@
             <p class="tag">Developer toolkit</p>
             <h1>Generate data.<br>Build without limits.</h1>
             <p class="subtitle">
-                Create realistic fictional user and product records for testing,
-                prototyping and development. Preview your data and export it as CSV.
+                Create realistic fictional datasets for testing, prototyping and development. Preview your data and export it as CSV or JSON.
             </p>
         </section>
 
@@ -278,6 +276,8 @@
                     <select id="type">
                         <option value="users">Users</option>
                         <option value="products">Products</option>
+                        <option value="students">Students</option>
+                        <option value="employees">Employees</option>
                     </select>
                 </div>
 
@@ -292,6 +292,10 @@
 
                 <button class="secondary" onclick="downloadCSV()">
                     ↓ Download CSV
+                </button>
+
+                <button class="secondary" onclick="downloadJSON()">
+                    ↓ Download JSON
                 </button>
             </div>
             <p id="message" role="status"></p>
@@ -308,7 +312,7 @@
             </div>
             <div class="stat">
                 <p>Export format</p>
-                <h2>CSV</h2>
+                <h2 id="formatStat">CSV / JSON</h2>
             </div>
         </section>
 
@@ -382,7 +386,7 @@
                     records.length;
 
                 document.getElementById("typeStat").textContent =
-                    settings.type === "users" ? "Users" : "Products";
+                    settings.type.charAt(0).toUpperCase() + settings.type.slice(1);
 
                 message.textContent =
                     "Successfully generated " + records.length + " records.";
@@ -433,7 +437,22 @@
                 window.location.href =
                     `/${settings.type}/csv?count=${settings.count}`;
 
+                document.getElementById("formatStat").textContent = "CSV";
                 message.textContent = "Your CSV download is starting...";
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        }
+
+        function downloadJSON() {
+            try {
+                const settings = getSettings();
+
+                window.location.href =
+                    `/${settings.type}/json?count=${settings.count}`;
+
+                document.getElementById("formatStat").textContent = "JSON";
+                message.textContent = "Your JSON download is starting...";
             } catch (error) {
                 message.textContent = error.message;
             }
@@ -441,9 +460,8 @@
 
         typeInput.addEventListener("change", () => {
             document.getElementById("typeStat").textContent =
-                typeInput.value === "users" ? "Users" : "Products";
+                typeInput.value.charAt(0).toUpperCase() + typeInput.value.slice(1);
         });
     </script>
 </body>
 </html>
-```
