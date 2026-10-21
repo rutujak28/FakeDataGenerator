@@ -1,0 +1,449 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataLab | Fake Data Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #0b1020;
+            color: #eef2ff;
+            min-height: 100vh;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 7%;
+            border-bottom: 1px solid #222b43;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: 750;
+            letter-spacing: -0.7px;
+        }
+
+        .brand span {
+            color: #8b80ff;
+        }
+
+        .api-link {
+            color: #c6caff;
+            text-decoration: none;
+            border: 1px solid #343d5b;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        main {
+            width: 86%;
+            max-width: 1120px;
+            margin: 55px auto;
+        }
+
+        .hero {
+            margin-bottom: 32px;
+        }
+
+        .tag {
+            color: #a99fff;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            letter-spacing: -1.5px;
+            margin-bottom: 14px;
+        }
+
+        .subtitle {
+            color: #9ca9c5;
+            line-height: 1.7;
+            max-width: 650px;
+        }
+
+        .panel {
+            background: #121a2d;
+            border: 1px solid #28334d;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 24px;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: end;
+            gap: 18px;
+        }
+
+        .field {
+            flex: 1;
+            min-width: 170px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: #bdc8e0;
+            margin-bottom: 10px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            border: 1px solid #35415e;
+            background: #0b1223;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 14px 20px;
+            font-weight: 650;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.12);
+        }
+
+        .primary {
+            background: linear-gradient(135deg, #8175ff, #5c6df2);
+            color: white;
+        }
+
+        .secondary {
+            background: #202b43;
+            border: 1px solid #384765;
+            color: #e2e8ff;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat {
+            background: #121a2d;
+            border: 1px solid #28334d;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .stat p {
+            color: #9ca9c5;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .stat h2 {
+            font-size: 27px;
+        }
+
+        .table-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .table-heading p {
+            color: #9ca9c5;
+            font-size: 13px;
+            margin-top: 7px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #273149;
+            white-space: nowrap;
+        }
+
+        th {
+            color: #a99fff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        td {
+            color: #d9e1f5;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px 10px;
+            color: #8492b1;
+        }
+
+        #message {
+            color: #a99fff;
+            margin-top: 15px;
+            font-size: 13px;
+            min-height: 18px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 28px;
+            color: #71809f;
+            font-size: 12px;
+            border-top: 1px solid #222b43;
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 20px 5%;
+            }
+
+            main {
+                width: 92%;
+                margin-top: 35px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                align-items: stretch;
+            }
+
+            .controls button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="brand">Data<span>Lab.</span></div>
+        <a class="api-link" href="/docs" target="_blank">API Documentation ↗</a>
+    </header>
+
+    <main>
+        <section class="hero">
+            <p class="tag">Developer toolkit</p>
+            <h1>Generate data.<br>Build without limits.</h1>
+            <p class="subtitle">
+                Create realistic fictional user and product records for testing,
+                prototyping and development. Preview your data and export it as CSV.
+            </p>
+        </section>
+
+        <section class="panel">
+            <div class="controls">
+                <div class="field">
+                    <label for="type">Data type</label>
+                    <select id="type">
+                        <option value="users">Users</option>
+                        <option value="products">Products</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="count">Number of records (1–100)</label>
+                    <input id="count" type="number" min="1" max="100" value="5">
+                </div>
+
+                <button class="primary" onclick="generateData()">
+                    Generate preview
+                </button>
+
+                <button class="secondary" onclick="downloadCSV()">
+                    ↓ Download CSV
+                </button>
+            </div>
+            <p id="message" role="status"></p>
+        </section>
+
+        <section class="stats">
+            <div class="stat">
+                <p>Records generated</p>
+                <h2 id="recordStat">0</h2>
+            </div>
+            <div class="stat">
+                <p>Selected dataset</p>
+                <h2 id="typeStat">Users</h2>
+            </div>
+            <div class="stat">
+                <p>Export format</p>
+                <h2>CSV</h2>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="table-heading">
+                <div>
+                    <h3>Data preview</h3>
+                    <p>Your generated records appear here.</p>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead id="tableHead">
+                        <tr><th>Preview</th></tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td class="empty">
+                                Click “Generate preview” to get started.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        DataLab · Fake Data Generator API · Built with FastAPI, Python and Faker
+    </footer>
+
+    <script>
+        const typeInput = document.getElementById("type");
+        const countInput = document.getElementById("count");
+        const message = document.getElementById("message");
+
+        function getSettings() {
+            const count = Number(countInput.value);
+
+            if (!Number.isInteger(count) || count < 1 || count > 100) {
+                throw new Error("Enter a whole number between 1 and 100.");
+            }
+
+            return {
+                type: typeInput.value,
+                count: count
+            };
+        }
+
+        async function generateData() {
+            try {
+                const settings = getSettings();
+
+                message.textContent = "Generating your data...";
+
+                const response = await fetch(
+                    `/${settings.type}?count=${settings.count}`
+                );
+
+                if (!response.ok) {
+                    throw new Error("Could not generate data.");
+                }
+
+                const result = await response.json();
+                const records = result[settings.type];
+
+                renderTable(records);
+
+                document.getElementById("recordStat").textContent =
+                    records.length;
+
+                document.getElementById("typeStat").textContent =
+                    settings.type === "users" ? "Users" : "Products";
+
+                message.textContent =
+                    "Successfully generated " + records.length + " records.";
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        }
+
+        function renderTable(records) {
+            const head = document.getElementById("tableHead");
+            const body = document.getElementById("tableBody");
+
+            head.replaceChildren();
+            body.replaceChildren();
+
+            if (!records.length) {
+                body.textContent = "No records available.";
+                return;
+            }
+
+            const headerRow = document.createElement("tr");
+
+            Object.keys(records[0]).forEach(key => {
+                const th = document.createElement("th");
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+
+            head.appendChild(headerRow);
+
+            records.forEach(record => {
+                const row = document.createElement("tr");
+
+                Object.values(record).forEach(value => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+                body.appendChild(row);
+            });
+        }
+
+        function downloadCSV() {
+            try {
+                const settings = getSettings();
+
+                window.location.href =
+                    `/${settings.type}/csv?count=${settings.count}`;
+
+                message.textContent = "Your CSV download is starting...";
+            } catch (error) {
+                message.textContent = error.message;
+            }
+        }
+
+        typeInput.addEventListener("change", () => {
+            document.getElementById("typeStat").textContent =
+                typeInput.value === "users" ? "Users" : "Products";
+        });
+    </script>
+</body>
+</html>
+```
